@@ -1,0 +1,10 @@
+# HTTPS for the pay API. Caddy gets the certificate itself.
+# No access log is configured, so requests are not recorded.
+{
+	admin off
+}
+
+{$PAY_DOMAIN} {
+	header -Server
+	reverse_proxy pay:8080
+}

@@ -1,0 +1,47 @@
+# The donation server: wallet-rpc (view-only wallet), the pay API, and Caddy for HTTPS.
+# Only Caddy publishes ports. Settings come from .env (copy .env.example).
+name: permanentunderclass-pay
+
+services:
+  wallet-rpc:
+    build:
+      context: .
+      dockerfile: wallet-rpc.Dockerfile
+    restart: unless-stopped
+    environment:
+      MONERO_NETWORK: ${MONERO_NETWORK:-mainnet}
+      MONERO_DAEMON: ${MONERO_DAEMON:?set MONERO_DAEMON in .env}
+      MONERO_EXTRA_ARGS: ${MONERO_EXTRA_ARGS:-}
+    volumes:
+      - wallet:/wallet
+
+  pay:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      - wallet-rpc
+    env_file: .env
+    environment:
+      WALLET_RPC_URL: http://wallet-rpc:18083/json_rpc
+      TRUST_PROXY: "true"
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      - pay
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      PAY_DOMAIN: ${PAY_DOMAIN:?set PAY_DOMAIN in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  wallet:
+  caddy_data:
+  caddy_config:

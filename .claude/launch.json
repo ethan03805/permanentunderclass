@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "pay-demo",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "demo", "--prefix", "pay"],
+      "port": 8787
+    },
+    {
+      "name": "site",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "site", "--", "--port", "4321"],
+      "port": 4321,
+      "env": { "PUBLIC_PAY_URL": "http://localhost:8787" }
+    }
+  ]
+}

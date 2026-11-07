@@ -1,0 +1,169 @@
+---
+import Base from '../layouts/Base.astro';
+import { links } from '../links';
+
+const faqs = [
+  {
+    q: 'Is it live?',
+    a: 'No. Splitting a model across machines over the encrypted chain works and has been tested on a real model. Payments, trust checks and public nodes are not built yet. The status page on GitHub is the one place that is kept current.',
+  },
+  {
+    q: 'Can a node read what I send?',
+    a: 'A node sees the model’s internal state for the layers it holds, not your text, and it does not know who you are. That state can leak some of what you wrote, which is why hardware-attested nodes are planned and you will be able to choose them.',
+  },
+  {
+    q: 'How do node operators get paid?',
+    a: 'In Monero, for every token their machine serves, the way a mining pool pays miners for their share of the work.',
+  },
+  {
+    q: 'Why Monero?',
+    a: 'Nobody can refuse to process it, and it needs no account. Its habits, keys instead of accounts and nothing logged, are the model for the rest of the network.',
+  },
+  {
+    q: 'Which models?',
+    a: 'Any model llama.cpp can run, split by layer. Large open-weight GLM and Kimi models come first.',
+  },
+];
+---
+
+<Base
+  title="Permanent Underclass"
+  description="Large open-weight language models, run across computers that belong to many different people. No account."
+>
+  <section class="hero">
+    <div class="col">
+      <h1>Welcome to the permanent underclass.</h1>
+      <div class="prose">
+        <p>
+          Permanent Underclass runs large open-weight language models across computers that belong
+          to many different people. The first and last layers run on your machine. The machines in
+          between each hold a slice of the model and never learn who is asking. No account.
+        </p>
+        <p>
+          Point anything that speaks the OpenAI API at the client on your machine. The people
+          running the machines in between are paid in Monero for the tokens they serve, the way a
+          mining pool pays miners.
+        </p>
+        <p>
+          <span class="em">Not open yet.</span> The encrypted chain between machines works and has
+          been tested on a real model. Payments and public nodes are not built.
+        </p>
+      </div>
+      <div class="links">
+        <a href="/donate">Donate</a>
+        <span class="tag">Monero</span>
+      </div>
+      <pre class="code">$ dfin client --model model.gguf --head 0:3 --tail 77:end \
+    --hub &lt;hub&gt; --listen 127.0.0.1:8080
+# point any OpenAI-compatible tool at http://127.0.0.1:8080/v1</pre>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="col">
+      <h2>How it works</h2>
+      <div class="prose features">
+        <div>
+          <p class="title">Your machine holds the ends</p>
+          <p>
+            The client on your computer runs the first layers, the last layer and the output. Your
+            text becomes model state before it leaves and turns back into text only when it returns.
+          </p>
+        </div>
+        <div>
+          <p class="title">Other machines hold the middle</p>
+          <p>
+            Each node holds a range of layers. The route is sealed hop by hop, so a node knows only
+            the two machines next to it, never who you are or the whole route.
+          </p>
+        </div>
+        <div>
+          <p class="title">Any model llama.cpp runs</p>
+          <p>
+            Every node opens the same model file with a different layer range, so any architecture
+            llama.cpp supports can be split. Large GLM and Kimi models first.
+          </p>
+        </div>
+        <div>
+          <p class="title">Paid like mining</p>
+          <p>
+            Nodes earn Monero for the tokens they serve, in proportion to the work they do. You pay
+            per token, or earn credit by running a node yourself.
+          </p>
+        </div>
+        <div>
+          <p class="title">No accounts</p>
+          <p>Clients and nodes are keys. There is no email, username or sign-in anywhere.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="who-sees-what">
+    <div class="col">
+      <h2>Who sees what</h2>
+      <div class="prose">
+        <p>Instead of a promise, here is what each part of the network can see:</p>
+        <ul>
+          <li>Your machine: your text, start to finish.</li>
+          <li>
+            A node: the model’s internal state for its layers, and the addresses of the two machines
+            beside it. Not your text, not who you are, not the whole route.
+          </li>
+          <li>A relay, if you use one: your IP address and encrypted traffic.</li>
+          <li>This website: nothing. No accounts, no cookies, no analytics.</li>
+        </ul>
+        <p class="quiet">
+          The internal state a node handles can leak some of what you wrote. Hardware-attested nodes
+          that can’t look inside are planned, and you will be able to choose them. The
+          <a href={links.design}>design document</a> covers the rest.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="run-a-node">
+    <div class="col">
+      <h2>Run a node</h2>
+      <div class="prose tight">
+        <p>
+          <span class="em">Linux, macOS or Windows.</span> CPU, or a GPU through Vulkan, CUDA or Metal.
+        </p>
+        <p class="quiet">
+          How much memory you need depends on the model and how many of its layers you hold. You pick
+          the range; the network routes traffic through it.
+        </p>
+        <p class="quiet">
+          A node can stay unlisted: no open port, reachable only through a relay, so the machines
+          beside it never learn its address.
+        </p>
+        <p class="quiet">Payouts start when the network opens.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="col">
+      <h2>FAQ</h2>
+      <div class="faq">
+        {
+          faqs.map((f) => (
+            <details>
+              <summary>
+                <span>{f.q}</span>
+                <span class="sign" aria-hidden="true" />
+              </summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="col">
+      <p class="prose">Monero donations are open. <a href="/donate">Donate</a></p>
+    </div>
+  </section>
+</Base>

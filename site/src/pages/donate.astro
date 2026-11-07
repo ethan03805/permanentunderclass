@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Donate · Permanent Underclass"
+  description="Donate Monero to Permanent Underclass. Each visit gets its own address."
+>
+  <section class="hero">
+    <div class="col">
+      <h1>Donate</h1>
+      <div class="prose">
+        <p>
+          Monero only. Each visit gets its own address, so separate donations can’t be linked to each
+          other.
+        </p>
+      </div>
+
+      <noscript>
+        <p class="prose em">This page needs JavaScript to make a fresh address for you.</p>
+      </noscript>
+
+      <div id="donate-message" class="prose" hidden></div>
+
+      <div id="donate-panel" hidden>
+        <div class="donate-row">
+          <div id="donate-qr" class="qr" role="img" aria-label="QR code for your donation address"></div>
+          <div class="donate-side">
+            <div id="donate-address" class="code address" aria-label="Your donation address"></div>
+            <div class="donate-actions">
+              <button type="button" id="donate-copy" class="copy">copy</button>
+              <a id="donate-open" href="#">Open in wallet</a>
+            </div>
+            <div class="amount">
+              <label for="donate-amount">Amount</label>
+              <input
+                id="donate-amount"
+                type="text"
+                inputmode="decimal"
+                placeholder="optional"
+                autocomplete="off"
+                aria-describedby="donate-amount-error"
+              />
+              <span class="tag">XMR</span>
+            </div>
+            <p id="donate-amount-error" class="prose quiet small" hidden>Enter an amount like 0.05.</p>
+          </div>
+        </div>
+
+        <div id="donate-log" class="code log" role="status" aria-live="polite"></div>
+
+        <div class="prose quiet small donate-notes tight">
+          <p>This page checks for your payment by itself. Bookmark it to come back later.</p>
+          <p>A Monero payment is final after 10 confirmations, about 20 minutes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import '../scripts/donate';
+</script>
